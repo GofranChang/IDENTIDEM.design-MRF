@@ -17,7 +17,13 @@
 #include <BH1750.h>
 #include <U8g2_for_Adafruit_GFX.h>
 #include <Bounce2.h>
+#if ADAFRUIT_ENCODER
 #include <Adafruit_seesaw.h>
+#else
+#include <Encoder.h>
+#define getEncoderPosition read
+#define setEncoderPosition write
+#endif
 #include <seesaw_neopixel.h>
 #include <Preferences.h>
 #include <math.h>
@@ -117,11 +123,16 @@ void setup()
 
 
   // Start the encoder
+#if ADAFRUIT_ENCODER
   if (encoder.begin(SEESAW_ADDR)) {
     delay(10);
     encoder.setEncoderPosition(-encoder_value);
     encoder.enableEncoderInterrupt();
   }
+#else
+  delay(10);
+  encoder.setEncoderPosition(-encoder_value);
+#endif
 
   if (DEEPSLEEP_ENABLED == true) {
     esp_sleep_enable_ext0_wakeup(GPIO_NUM_10,0);

@@ -1,7 +1,11 @@
 // Hardware init
 // ---------------------
 // Inputs
+#if ADAFRUIT_ENCODER
 Adafruit_seesaw encoder;
+#else
+Encoder encoder(5, 6);
+#endif
 Adafruit_ADS1115 ads1015;
 Adafruit_MPU6050 mpu;
 
